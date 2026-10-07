@@ -15,6 +15,8 @@ const PAL = {
   F: '#f8c8a0', H: '#5c3820', p: '#f09090',  // 피부/머리/볼터치
 };
 
+export const PALETTE = PAL;
+
 function paint(fn) {
   const c = document.createElement('canvas');
   c.width = c.height = 16;
@@ -397,6 +399,9 @@ function sofa(capL, capR) { // 소파 뒷모습 (왼쪽 끝/가운데/오른쪽 
   });
 }
 
+const sofaL = sofa(true, false), sofaM = sofa(false, false), sofaR = sofa(false, true);
+const rugs = [rugTile(0, 0), rugTile(16, 0), rugTile(0, 16), rugTile(16, 16)];
+
 // ---------- 통창 (4x2칸): 64x32 그림 하나를 16x16 8조각으로 자름 ----------
 // 맵 글자: 윗줄 u v w x / 아랫줄 p q y i
 const BIG_WINDOW = (() => {
@@ -423,6 +428,7 @@ const BIG_WINDOW = (() => {
   for (let r = 0; r < 2; r++) for (let c = 0; c < 4; c++) {
     out.push(paint((_, __, ctx) => ctx.drawImage(big, c * 16, r * 16, 16, 16, 0, 0, 16, 16)));
   }
+  out.whole = big; // 64x32 전체
   return out;
 })();
 
@@ -435,7 +441,7 @@ export const TILE_SPRITES = {
   r: sideWallR,
   X: bottomWall,
   D: doorMat,
-  1: rugTile(0, 0), 2: rugTile(16, 0), 3: rugTile(0, 16), 4: rugTile(16, 16),
+  1: rugs[0], 2: rugs[1], 3: rugs[2], 4: rugs[3],
   B: over(wallLower, bedHead),
   b: over(floor, bedFoot),
   S: over(wallLower, shelf),
@@ -451,7 +457,7 @@ export const TILE_SPRITES = {
   J: doorGlass, j: doorOpen,
   O: over(bathFloor, toilet), c: over(bathFloor, bathSink), Q: over(bathFloor, bathtub),
   C: over(kitchenFloor, counter), e: over(kitchenFloor, kitchenSink), R: over(kitchenFloor, fridge),
-  F: over(floor, sofa(true, false)), g: over(floor, sofa(false, false)), h: over(floor, sofa(false, true)),
+  F: over(floor, sofaL), g: over(floor, sofaM), h: over(floor, sofaR),
 };
 
 // ---------- 플레이어: 15개월 여아, 단발머리, 흰 바디슈트 ----------
@@ -523,3 +529,66 @@ export const PLAYER = {
   left,
   right: left.map(flipH),
 };
+
+// ---------- 라이브러리 목록 (library.html 에서 보기/내려받기) ----------
+// 새 도트를 만들면 여기에 한 줄 추가하면 라이브러리에 나타남
+export const CATEGORIES = {
+  tiles: '바닥·벽·문',
+  furniture: '가구·소품',
+  window: '통창',
+  character: '캐릭터',
+};
+
+export const SPRITE_LIBRARY = [
+  // 바닥·벽·문
+  { id: 'floor-oatmeal', name: '바닥 타일(오트밀)', cat: 'tiles', canvas: floor },
+  { id: 'floor-bath', name: '욕실 타일(하늘색)', cat: 'tiles', canvas: bathFloor },
+  { id: 'wall-upper', name: '벽지(위)', cat: 'tiles', canvas: wallUpper },
+  { id: 'wall-lower', name: '벽지(아래, 걸레받이)', cat: 'tiles', canvas: wallLower },
+  { id: 'wall-top', name: '벽 윗면(벽돌)', cat: 'tiles', canvas: wallTop },
+  { id: 'wall-side-left', name: '왼쪽 벽', cat: 'tiles', canvas: sideWallL },
+  { id: 'wall-side-right', name: '오른쪽 벽', cat: 'tiles', canvas: sideWallR },
+  { id: 'wall-bottom', name: '아래쪽 벽', cat: 'tiles', canvas: bottomWall },
+  { id: 'void', name: '건물 밖(검정)', cat: 'tiles', canvas: voidTile },
+  { id: 'window-small', name: '창문(1칸)', cat: 'tiles', canvas: window_ },
+  { id: 'door-mat', name: '현관 매트', cat: 'tiles', canvas: doorMat },
+  { id: 'door-glass-closed', name: '중문(닫힘)', cat: 'tiles', canvas: doorGlass },
+  { id: 'door-glass-open', name: '중문(열림)', cat: 'tiles', canvas: doorOpen },
+  // 가구·소품
+  { id: 'bed-head', name: '침대(머리)', cat: 'furniture', canvas: bedHead },
+  { id: 'bed-foot', name: '침대(발치)', cat: 'furniture', canvas: bedFoot },
+  { id: 'shelf', name: '책장', cat: 'furniture', canvas: shelf },
+  { id: 'tv-off', name: 'TV(꺼짐)', cat: 'furniture', canvas: tv },
+  { id: 'tv-on', name: 'TV(켜짐)', cat: 'furniture', canvas: tvOn },
+  { id: 'table', name: '탁자', cat: 'furniture', canvas: table },
+  { id: 'plant', name: '화분', cat: 'furniture', canvas: plant },
+  { id: 'toilet', name: '변기', cat: 'furniture', canvas: toilet },
+  { id: 'bath-sink', name: '세면대', cat: 'furniture', canvas: bathSink },
+  { id: 'bathtub', name: '욕조', cat: 'furniture', canvas: bathtub },
+  { id: 'counter', name: '주방 조리대', cat: 'furniture', canvas: counter },
+  { id: 'kitchen-sink', name: '주방 싱크대', cat: 'furniture', canvas: kitchenSink },
+  { id: 'fridge', name: '냉장고', cat: 'furniture', canvas: fridge },
+  { id: 'sofa-left', name: '소파(왼쪽)', cat: 'furniture', canvas: sofaL },
+  { id: 'sofa-mid', name: '소파(가운데)', cat: 'furniture', canvas: sofaM },
+  { id: 'sofa-right', name: '소파(오른쪽)', cat: 'furniture', canvas: sofaR },
+  { id: 'rug-tl', name: '러그(왼쪽 위)', cat: 'furniture', canvas: rugs[0] },
+  { id: 'rug-tr', name: '러그(오른쪽 위)', cat: 'furniture', canvas: rugs[1] },
+  { id: 'rug-bl', name: '러그(왼쪽 아래)', cat: 'furniture', canvas: rugs[2] },
+  { id: 'rug-br', name: '러그(오른쪽 아래)', cat: 'furniture', canvas: rugs[3] },
+  // 통창 (4x2칸)
+  { id: 'window-big-full', name: '통창 전체(4x2칸)', cat: 'window', canvas: BIG_WINDOW.whole },
+  ...BIG_WINDOW.map((canvas, i) => ({
+    id: `window-big-${i < 4 ? 'top' : 'bottom'}-${i % 4 + 1}`,
+    name: `통창 조각(${i < 4 ? '위' : '아래'} ${i % 4 + 1})`,
+    cat: 'window',
+    canvas,
+  })),
+  // 캐릭터 (15개월 하라)
+  ...Object.entries({ down: '아래', up: '위', left: '왼쪽', right: '오른쪽' }).flatMap(([dir, label]) =>
+    ['서기', '걷기1', '걷기2'].map((pose, i) => ({
+      id: `hara-${dir}-${i}`,
+      name: `하라 ${label} ${pose}`,
+      cat: 'character',
+      canvas: PLAYER[dir][i],
+    }))),
+];

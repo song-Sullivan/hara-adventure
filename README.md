@@ -12,13 +12,19 @@ python -m http.server 8000
 
 브라우저에서 http://localhost:8000 접속. 이동: 방향키 / WASD / 가상 스틱, A: Z·Enter, B: X·Esc
 
+## 도트 라이브러리
+
+`library.html` 을 열면(`http://localhost:8000/library.html`) 지금까지 만든 모든 도트(바닥·벽·문, 가구, 통창, 하라 캐릭터)와 색상표를 볼 수 있고, PNG 개별 저장 / 전체 ZIP / 스프라이트 시트 / 목록 JSON 으로 내려받을 수 있습니다.
+새 도트를 만들면 `src/sprites.js` 맨 아래 `SPRITE_LIBRARY` 에 한 줄 추가하세요.
+
 ## 구조
 
 - `index.html`, `style.css` — 캔버스 페이지
 - `src/main.js` — 게임 루프, 카메라, 정수 배율 스케일링 (160×144)
 - `src/map.js` — 16px 타일맵, 충돌, 워프
 - `src/maps.js` — 맵 데이터(마을, 집)와 시작 위치
-- `src/sprites.js` — 코드로 찍은 도트 스프라이트 (타일, 가구, 플레이어)
+- `src/sprites.js` — 코드로 찍은 도트 스프라이트 (타일, 가구, 플레이어) + `SPRITE_LIBRARY` 목록
+- `library.html`, `src/library.js` — 도트 라이브러리 페이지
 - `src/player.js` — 타일 단위 이동 (방향 전환 → 이동, 골드 방식)
 - `src/input.js` — 입력 통합(키보드 + 가상 패드). 방향 `heldDir()`, 버튼 `isDown()`/`consume()`
 - `src/dialog.js` — 골드풍 대화창 (타자 효과, A로 넘기기, 확인A/뒤로가기B 선택)
