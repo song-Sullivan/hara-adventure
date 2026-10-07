@@ -22,37 +22,53 @@ export const MAPS = {
       'TTTTTTTTTTTTTTTTTTTT',
     ],
     warps: {
-      '4,4': { map: 'house', x: 4, y: 7, facing: 'up' },
+      '4,4': { map: 'house', x: 6, y: 18, facing: 'up' }, // 현관
     },
   },
 
-  house: {
+  house: { // 84A형 아파트: 현관 → 중문 → 홀(화장실/방1/복도) → 방2, 거실·주방, 안방
     rows: [
-      'WWNWWWWNWW',
-      'VBVSSVMVVV',
-      'lbffffffPr',
-      'lffffffffr',
-      'lfff12fffr',
-      'lfff34fffr',
-      'lKfffffffr',
-      'lffffffffr',
-      'XXXXDXXXXX',
+      'ZWNWWWWNWZWNWWNWWZWNWWWWWWNWZzzzzzzzzz',
+      'ZVBVSSVVVZVSSVVVVZVVSVMVVSVVZzzzzzzzzz',
+      'ZfbfffffPZffffffPZfffffffffPZzzzzzzzzz',
+      'ZffffffffZfffffKfZffffffffffZZZZZZZZZZ',
+      'ZffffffffZfffffffZfff12fffffZWWNWWNWWZ',
+      'Zff12ffffZfffffffZfff34fffffZVSVBBVSVZ',
+      'Zff34ffffZfffffffZffffffffffZfffbbfffZ',
+      'ZffffffffZfffffffZfffFghffffZffffffffZ',
+      'ZffffffffZfffffffZffffffffffZfffffffPZ',
+      'ZZZZZZfZZZZZZfZZZZffffffffffZffffffffZ',
+      'ZWWWWWfWWZWWWfWWWZffffffffffZffffffffZ',
+      'ZVVVVVfVVZVVVfVVVZffffffffffZffffffffZ',
+      'ZOcQZffffffffffffffffffffffffffffffffZ',
+      'ZtttfffffffffffffffffffffffffffffffffZ',
+      'ZtttZffffZZZZZZZZZkkCeCCRkkkZffffffffZ',
+      'ZtttZffffZZZZZZZZZkkkkkkkkPkZZZZZZZZZZ',
+      'ZZZZZZJZZZzzzzzzzZkkkkkKkkkkZzzzzzzzzz',
+      'zzzzZssssZzzzzzzzZkkkkkkkkkkZzzzzzzzzz',
+      'zzzzZssssZzzzzzzzZZZZZZZZZZZZzzzzzzzzz',
+      'zzzzZZDZZZzzzzzzzzzzzzzzzzzzzzzzzzzzzz',
     ],
     warps: {
-      '4,8': { map: 'town', x: 4, y: 5, facing: 'down' },
+      '6,19': { map: 'town', x: 4, y: 5, facing: 'down' },
     },
     // 바라보는 칸에서 A 버튼을 누르면 나오는 메시지
     // choice: true 면 확인(A)/뒤로가기(B). yes 는 확인 뒤에 이어서 뜰 메시지,
-    // setTile 은 확인 시 그 칸을 바꿀 타일 글자. states 는 현재 타일 글자별 내용
+    // setTile 은 (확인 후 / choice 없으면 바로) 그 칸을 바꿀 타일 글자. states 는 현재 타일 글자별 내용
     interactions: {
-      '6,1': {
+      '22,1': { // 거실 TV
         states: {
           M: { text: '티비를 켜시겠습니까?', choice: true, yes: '티비를 켰다!', setTile: 'm' },
           m: { text: '티비를 끄시겠습니까?', choice: true, yes: '티비를 껐다.', setTile: 'M' },
+        },
+      },
+      '6,16': { // 중문
+        states: {
+          J: { text: '중문을 열었다.', setTile: 'j' },
         },
       },
     },
   },
 };
 
-export const START = { map: 'house', x: 3, y: 3, facing: 'down' };
+export const START = { map: 'house', x: 32, y: 8, facing: 'down' }; // 안방

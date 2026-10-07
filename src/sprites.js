@@ -10,6 +10,7 @@ const PAL = {
   P: '#f4ecdc', W: '#ffffff',               // 베개/흰색
   G: '#c8c8d0', g: '#787884',               // 회색
   S: '#98d4f8', U: '#58a8d8', T: '#202830', // 하늘/화면
+  a: '#a8947f', q: '#74624f',               // 벽 윗면
   F: '#f8c8a0', H: '#5c3820', p: '#f09090',  // 피부/머리/볼터치
 };
 
@@ -249,6 +250,162 @@ const plant = art('plant', [
   '................',
 ]);
 
+
+// ---------- 아파트용 바닥/벽/문 ----------
+const wallTop = paint((_, rect) => {   // 벽 윗면 (벽돌 무늬)
+  rect(0, 0, 16, 16, 'a');
+  rect(0, 7, 16, 1, 'q'); rect(0, 15, 16, 1, 'q');
+  for (let y = 0; y < 7; y++) { /* 위쪽 줄 세로 이음새 */ rect(3, y, 1, 1, 'q'); }
+  for (let y = 8; y < 15; y++) rect(11, y, 1, 1, 'q');
+});
+const voidTile = paint((_, rect) => rect(0, 0, 16, 16, 'K'));
+const bathFloor = paint((_, rect) => {  // 화장실 타일
+  rect(0, 0, 16, 16, 'A');
+  rect(0, 0, 16, 1, 'B'); rect(0, 8, 16, 1, 'B');
+  rect(0, 0, 1, 16, 'B'); rect(8, 0, 1, 16, 'B');
+});
+const entryFloor = paint((px, rect) => { // 현관 돌바닥
+  rect(0, 0, 16, 16, 'G');
+  rect(0, 0, 16, 1, 'g'); rect(0, 0, 1, 16, 'g');
+  for (const [x, y] of [[4, 4], [11, 6], [6, 11], [12, 12]]) px(x, y, 'W');
+});
+const kitchenFloor = paint((_, rect) => { // 주방 체크무늬
+  rect(0, 0, 16, 16, 'P');
+  rect(8, 0, 8, 8, 'A'); rect(0, 8, 8, 8, 'A');
+});
+const doorGlass = paint((px, rect) => {   // 중문(닫힘): 유리 미닫이
+  rect(0, 0, 16, 16, 'D');
+  rect(1, 0, 14, 16, 'K');
+  rect(2, 1, 12, 14, 'S');
+  for (const [x, y] of [[4, 3], [5, 4], [6, 5], [9, 8], [10, 9], [11, 10]]) px(x, y, 'W');
+  rect(7, 1, 2, 14, 'K');
+  rect(12, 7, 1, 4, 'g');
+});
+const doorOpen = paint((_, rect, g) => { // 중문(열림)
+  g.drawImage(entryFloor, 0, 0);
+  rect(0, 0, 2, 16, 'D'); rect(14, 0, 2, 16, 'D');
+  rect(2, 0, 4, 16, 'K'); rect(3, 1, 2, 14, 'S');
+});
+
+const toilet = art('toilet', [
+  '................',
+  '....KKKKKKKK....',
+  '....KWWWWWWK....',
+  '....KWWGGWWK....',
+  '....KWWWWWWK....',
+  '....KKKKKKKK....',
+  '...KWWWWWWWWK...',
+  '..KWWWWWWWWWWK..',
+  '..KWWWWWWWWWWK..',
+  '..KWWAAAAAAWWK..',
+  '..KWAAAAAAAAWK..',
+  '..KWAAAAAAAAWK..',
+  '...KWAAAAAAWK...',
+  '....KWWWWWWK....',
+  '.....KKKKKK.....',
+  '................',
+]);
+const bathSink = art('bathSink', [
+  '................',
+  '................',
+  '......KGGK......',
+  '......KGGK......',
+  '.KKKKKKKKKKKKKK.',
+  '.KWWWWWWWWWWWWK.',
+  '.KWAAAAAAAAAAWK.',
+  '.KWAAAAAAAAAAWK.',
+  '.KWWWWWWWWWWWWK.',
+  '.KKKKKKKKKKKKKK.',
+  '.KDDDDDDDDDDDDK.',
+  '.KDLLDDDDDDLLDK.',
+  '.KDLLDDDDDDLLDK.',
+  '.KDDDDDDDDDDDDK.',
+  '.KKKKKKKKKKKKKK.',
+  '................',
+]);
+const bathtub = art('bathtub', [
+  '................',
+  '.KKKKKKKKKKKKKK.',
+  '.KWWWWWWWWWWWWK.',
+  '.KWAAAAAAAAAAWK.',
+  '.KWAAAAAAAAAAWK.',
+  '.KWAAAAWWAAAAWK.',
+  '.KWAAAAAAAAAAWK.',
+  '.KWAAAAAAAAAAWK.',
+  '.KWAAAAAAAAAAWK.',
+  '.KWWWWWWWWWWWWK.',
+  '.KKKKKKKKKKKKKK.',
+  '..KGK......KGK..',
+  '................',
+  '................',
+  '................',
+  '................',
+]);
+const counter = art('counter', [
+  '................',
+  '.KKKKKKKKKKKKKK.',
+  '.KGGGGGGGGGGGGK.',
+  '.KGWWWWWWWWWWGK.',
+  '.KKKKKKKKKKKKKK.',
+  '.KLLLLLLLLLLLLK.',
+  '.KLMMMMMMMMMMLK.',
+  '.KLMMMMMMMMMMLK.',
+  '.KLMMMMGGMMMMLK.',
+  '.KLMMMMMMMMMMLK.',
+  '.KLMMMMMMMMMMLK.',
+  '.KLLLLLLLLLLLLK.',
+  '.KKKKKKKKKKKKKK.',
+  '................',
+  '................',
+  '................',
+]);
+const kitchenSink = art('kitchenSink', [
+  '......KGGK......',
+  '.KKKKKKKKKKKKKK.',
+  '.KGGGGGGGGGGGGK.',
+  '.KGKAAAAAAAAKGK.',
+  '.KKKKKKKKKKKKKK.',
+  '.KLLLLLLLLLLLLK.',
+  '.KLMMMMMMMMMMLK.',
+  '.KLMMMMMMMMMMLK.',
+  '.KLMMMMGGMMMMLK.',
+  '.KLMMMMMMMMMMLK.',
+  '.KLMMMMMMMMMMLK.',
+  '.KLLLLLLLLLLLLK.',
+  '.KKKKKKKKKKKKKK.',
+  '................',
+  '................',
+  '................',
+]);
+const fridge = art('fridge', [
+  '...KKKKKKKKKK...',
+  '...KWWWWWWWWK...',
+  '...KWWWWWWWWK...',
+  '...KWWGWWWWWK...',
+  '...KWWGWWWWWK...',
+  '...KWWWWWWWWK...',
+  '...KKKKKKKKKK...',
+  '...KWWWWWWWWK...',
+  '...KWWGWWWWWK...',
+  '...KWWGWWWWWK...',
+  '...KWWWWWWWWK...',
+  '...KWWWWWWWWK...',
+  '...KWWWWWWWWK...',
+  '...KWWWWWWWWK...',
+  '...KKKKKKKKKK...',
+  '................',
+]);
+
+function sofa(capL, capR) { // 소파 뒷모습 (왼쪽 끝/가운데/오른쪽 끝)
+  return paint((_, rect) => {
+    const x0 = capL ? 1 : 0, x1 = capR ? 15 : 16;
+    rect(x0, 3, x1 - x0, 9, 'K');
+    rect(x0 + (capL ? 1 : 0), 4, x1 - x0 - (capL ? 1 : 0) - (capR ? 1 : 0), 7, 'U');
+    rect(x0 + (capL ? 1 : 0), 6, x1 - x0 - (capL ? 1 : 0) - (capR ? 1 : 0), 1, 'C');
+    rect(x0 + (capL ? 1 : 0), 9, x1 - x0 - (capL ? 1 : 0) - (capR ? 1 : 0), 1, 'C');
+  });
+}
+
 export const TILE_SPRITES = {
   f: floor,
   W: wallUpper,
@@ -266,6 +423,12 @@ export const TILE_SPRITES = {
   m: over(wallLower, tvOn),
   K: over(floor, table),
   P: over(floor, plant),
+  // 아파트
+  Z: wallTop, z: voidTile, t: bathFloor, s: entryFloor, k: kitchenFloor,
+  J: doorGlass, j: doorOpen,
+  O: over(bathFloor, toilet), c: over(bathFloor, bathSink), Q: over(bathFloor, bathtub),
+  C: over(kitchenFloor, counter), e: over(kitchenFloor, kitchenSink), R: over(kitchenFloor, fridge),
+  F: over(floor, sofa(true, false)), g: over(floor, sofa(false, false)), h: over(floor, sofa(false, true)),
 };
 
 // ---------- 플레이어: 15개월 여아, 단발머리, 흰 바디슈트 ----------

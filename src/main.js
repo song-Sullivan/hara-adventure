@@ -61,6 +61,7 @@ function frame(now) {
       const [fx, fy] = player.facingTile();
       const hit = map.interactionAt(fx, fy);
       if (hit) {
+        if (!hit.choice && hit.setTile) map.setTile(fx, fy, hit.setTile);
         dialog.open(hit.text, {
           choice: hit.choice,
           onAnswer: (yes) => {

@@ -26,6 +26,23 @@ export const TILES = {
   'm': { color: '#98d4f8', solid: true },  // TV (켜짐)
   'K': { color: '#c89050', solid: true },  // 탁자
   'P': { color: '#58b058', solid: true },  // 화분
+  // 아파트
+  'Z': { color: '#a8947f', solid: true },  // 벽 윗면
+  'z': { color: '#2a1c14', solid: true },  // 건물 밖(빈 공간)
+  't': { color: '#e4ecf4', solid: false }, // 화장실 바닥
+  's': { color: '#c8c8d0', solid: false }, // 현관 바닥
+  'k': { color: '#f4ecdc', solid: false }, // 주방 바닥
+  'J': { color: '#98d4f8', solid: true },  // 중문(닫힘)
+  'j': { color: '#c8c8d0', solid: false }, // 중문(열림)
+  'O': { color: '#ffffff', solid: true },  // 변기
+  'c': { color: '#ffffff', solid: true },  // 세면대
+  'Q': { color: '#98d4f8', solid: true },  // 욕조
+  'C': { color: '#c89050', solid: true },  // 주방 조리대
+  'e': { color: '#c89050', solid: true },  // 주방 싱크대
+  'R': { color: '#ffffff', solid: true },  // 냉장고
+  'F': { color: '#58a8d8', solid: true },  // 소파(왼쪽)
+  'g': { color: '#58a8d8', solid: true },  // 소파(가운데)
+  'h': { color: '#58a8d8', solid: true },  // 소파(오른쪽)
   '1': { color: '#d84848', solid: false }, // 러그
   '2': { color: '#d84848', solid: false },
   '3': { color: '#d84848', solid: false },
