@@ -12,7 +12,7 @@ export const TILES = {
   'd': { color: '#603010', solid: false }, // 문 (워프)
   // 아래는 실내 타일. 그림은 sprites.js 의 TILE_SPRITES
   'D': { color: '#c03030', solid: false }, // 현관 매트 (워프)
-  'f': { color: '#c89050', solid: false }, // 바닥
+  'f': { color: '#e6d9bd', solid: false }, // 바닥
   'W': { color: '#e4ecf4', solid: true },  // 벽(위)
   'V': { color: '#e4ecf4', solid: true },  // 벽(아래)
   'N': { color: '#98d4f8', solid: true },  // 창문
@@ -26,14 +26,23 @@ export const TILES = {
   'm': { color: '#98d4f8', solid: true },  // TV (켜짐)
   'K': { color: '#c89050', solid: true },  // 탁자
   'P': { color: '#58b058', solid: true },  // 화분
+  // 통창 8조각 (그림은 sprites.js 의 BIG_WINDOW)
+  'u': { color: '#98d4f8', solid: true },
+  'v': { color: '#98d4f8', solid: true },
+  'w': { color: '#98d4f8', solid: true },
+  'x': { color: '#98d4f8', solid: true },
+  'p': { color: '#98d4f8', solid: true },
+  'q': { color: '#98d4f8', solid: true },
+  'y': { color: '#98d4f8', solid: true },
+  'i': { color: '#98d4f8', solid: true },
   // 아파트
   'Z': { color: '#a8947f', solid: true },  // 벽 윗면
   'z': { color: '#2a1c14', solid: true },  // 건물 밖(빈 공간)
   't': { color: '#e4ecf4', solid: false }, // 화장실 바닥
-  's': { color: '#c8c8d0', solid: false }, // 현관 바닥
-  'k': { color: '#f4ecdc', solid: false }, // 주방 바닥
+  's': { color: '#e6d9bd', solid: false }, // 현관 바닥
+  'k': { color: '#e6d9bd', solid: false }, // 주방 바닥
   'J': { color: '#98d4f8', solid: true },  // 중문(닫힘)
-  'j': { color: '#c8c8d0', solid: false }, // 중문(열림)
+  'j': { color: '#e6d9bd', solid: false }, // 중문(열림)
   'O': { color: '#ffffff', solid: true },  // 변기
   'c': { color: '#ffffff', solid: true },  // 세면대
   'Q': { color: '#98d4f8', solid: true },  // 욕조

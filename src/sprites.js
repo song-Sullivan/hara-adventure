@@ -10,6 +10,7 @@ const PAL = {
   P: '#f4ecdc', W: '#ffffff',               // 베개/흰색
   G: '#c8c8d0', g: '#787884',               // 회색
   S: '#98d4f8', U: '#58a8d8', T: '#202830', // 하늘/화면
+  n: '#e6d9bd', m: '#d2c3a2', i: '#f1e8d2', // 오트밀 바닥 (기본/줄/밝음)
   a: '#a8947f', q: '#74624f',               // 벽 윗면
   F: '#f8c8a0', H: '#5c3820', p: '#f09090',  // 피부/머리/볼터치
 };
@@ -43,14 +44,11 @@ const flipH = (src) => paint((_, __, g) => {
 });
 
 // ---------- 바닥 / 벽 ----------
+// 집 안 모든 바닥: 오트밀색 정사각형 타일 (한 칸 = 타일 1장, 16x16)
 const floor = paint((px, rect) => {
-  rect(0, 0, 16, 16, 'M');
-  for (const y0 of [0, 8]) {
-    rect(0, y0, 16, 1, 'L');
-    rect(0, y0 + 7, 16, 1, 'D');
-  }
-  for (let y = 1; y < 7; y++) px(11, y, 'D');
-  for (let y = 9; y < 15; y++) px(4, y, 'D');
+  rect(0, 0, 16, 16, 'n');
+  rect(0, 0, 16, 1, 'm'); rect(0, 0, 1, 16, 'm');      // 줄눈
+  rect(3, 3, 4, 1, 'i'); rect(3, 4, 1, 3, 'i');         // 반짝임
 });
 
 function wallBase(px, rect) {
@@ -259,20 +257,13 @@ const wallTop = paint((_, rect) => {   // 벽 윗면 (벽돌 무늬)
   for (let y = 8; y < 15; y++) rect(11, y, 1, 1, 'q');
 });
 const voidTile = paint((_, rect) => rect(0, 0, 16, 16, 'K'));
-const bathFloor = paint((_, rect) => {  // 화장실 타일
+const bathFloor = paint((_, rect) => {  // 화장실 타일 (처음 만들었던 하늘색 타일)
   rect(0, 0, 16, 16, 'A');
   rect(0, 0, 16, 1, 'B'); rect(0, 8, 16, 1, 'B');
   rect(0, 0, 1, 16, 'B'); rect(8, 0, 1, 16, 'B');
 });
-const entryFloor = paint((px, rect) => { // 현관 돌바닥
-  rect(0, 0, 16, 16, 'G');
-  rect(0, 0, 16, 1, 'g'); rect(0, 0, 1, 16, 'g');
-  for (const [x, y] of [[4, 4], [11, 6], [6, 11], [12, 12]]) px(x, y, 'W');
-});
-const kitchenFloor = paint((_, rect) => { // 주방 체크무늬
-  rect(0, 0, 16, 16, 'P');
-  rect(8, 0, 8, 8, 'A'); rect(0, 8, 8, 8, 'A');
-});
+const entryFloor = floor; // 모든 바닥이 같은 타일
+const kitchenFloor = floor; // 모든 바닥이 같은 타일
 const doorGlass = paint((px, rect) => {   // 중문(닫힘): 유리 미닫이
   rect(0, 0, 16, 16, 'D');
   rect(1, 0, 14, 16, 'K');
@@ -406,6 +397,35 @@ function sofa(capL, capR) { // 소파 뒷모습 (왼쪽 끝/가운데/오른쪽 
   });
 }
 
+// ---------- 통창 (4x2칸): 64x32 그림 하나를 16x16 8조각으로 자름 ----------
+// 맵 글자: 윗줄 u v w x / 아랫줄 p q y i
+const BIG_WINDOW = (() => {
+  const big = document.createElement('canvas');
+  big.width = 64; big.height = 32;
+  const g = big.getContext('2d');
+  const rect = (x, y, w, h, k) => { g.fillStyle = PAL[k]; g.fillRect(x, y, w, h); };
+  rect(0, 0, 64, 32, 'K');                         // 바깥 테두리
+  rect(1, 1, 62, 27, 'W');                         // 흰 창틀
+  for (const x of [3, 35]) {                       // 유리 두 장
+    rect(x, 3, 26, 24, 'U');
+    rect(x, 11, 26, 16, 'S');
+  }
+  rect(8, 8, 8, 2, 'W'); rect(6, 10, 12, 2, 'W'); // 구름
+  rect(40, 6, 10, 2, 'W'); rect(38, 8, 14, 2, 'W');
+  rect(52, 13, 4, 4, 'Y');                         // 해
+  rect(3, 23, 26, 4, 'E'); rect(10, 21, 8, 2, 'E'); // 먼 산
+  rect(35, 22, 26, 5, 'E'); rect(44, 20, 10, 2, 'E');
+  rect(3, 26, 26, 1, 'e'); rect(35, 26, 26, 1, 'e');
+  rect(0, 28, 64, 1, 'K');                         // 창턱
+  rect(0, 29, 64, 2, 'L');
+  rect(0, 31, 64, 1, 'D');
+  const out = [];
+  for (let r = 0; r < 2; r++) for (let c = 0; c < 4; c++) {
+    out.push(paint((_, __, ctx) => ctx.drawImage(big, c * 16, r * 16, 16, 16, 0, 0, 16, 16)));
+  }
+  return out;
+})();
+
 export const TILE_SPRITES = {
   f: floor,
   W: wallUpper,
@@ -423,6 +443,9 @@ export const TILE_SPRITES = {
   m: over(wallLower, tvOn),
   K: over(floor, table),
   P: over(floor, plant),
+  // 통창
+  u: BIG_WINDOW[0], v: BIG_WINDOW[1], w: BIG_WINDOW[2], x: BIG_WINDOW[3],
+  p: BIG_WINDOW[4], q: BIG_WINDOW[5], y: BIG_WINDOW[6], i: BIG_WINDOW[7],
   // 아파트
   Z: wallTop, z: voidTile, t: bathFloor, s: entryFloor, k: kitchenFloor,
   J: doorGlass, j: doorOpen,
