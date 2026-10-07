@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, viewport-fit=cover">
+  <title>하라의 모험</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <canvas id="game" width="160" height="144"></canvas>
+
+  <!-- 가상 패드 -->
+  <div id="stick" class="pad"><div class="knob"></div></div>
+  <div id="buttons" class="pad">
+    <div class="btn b" data-btn="b">B</div>
+    <div class="btn a" data-btn="a">A</div>
+  </div>
+
+  <script type="module" src="src/main.js"></script>
+  <script type="module" src="src/touchpad.js"></script>
+</body>
+</html>
